@@ -976,10 +976,6 @@
                 _pageWindow.unbind("load", connection._.deferredStartHandler);
             }
 
-            // Always clean up private non-timeout based state.
-            delete connection._.config;
-            delete connection._.deferredStartHandler;
-
             // This needs to be checked despite the connection state because a connection start can be deferred until page load.
             // If we've deferred the start due to a page load we need to unbind the "onLoad" -> start event.
             if (!_pageLoaded && (!connection._.config || connection._.config.waitForPageLoad === true)) {
@@ -993,6 +989,10 @@
                 // Short-circuit because the start has not been fully started.
                 return;
             }
+
+            // Always clean up private non-timeout based state.
+            delete connection._.config;
+            delete connection._.deferredStartHandler;
 
             if (connection.state === signalR.connectionState.disconnected) {
                 return;
